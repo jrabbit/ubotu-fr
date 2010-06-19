@@ -1,0 +1,94 @@
+This plugin protect channel against differents kind of attacks:
+
+Check http://coevoet.fr for more information
+
+
+ * flood : a lot of message from same user in few seconds
+ * low flood : client schedule message, so that bypass flood protection
+ * repeat : avoid useless repeat message or sentence with a lof of same chars
+ * join/part/quit flood : that's handle Excess Flood, netsplit, cloak changes
+ * channel notices
+ * ban evasion with gateway/web
+ * abuse of colors, capslocks, chars flood
+ * follow bad user, and take action if necessary
+ * handle banned cloaked user who joined before be identified
+ * command flood : the bot will autoignore the command in the channel.
+ * massjoin : the bot will put some modes if massjoin is detect ( understand netsplit )
+ * detect clone attacks
+
+the plugin use a database for tracking bans, and another one, per channel to store regexps
+
+with bantracker you can !bansearch, 
+!banedit the duration of an active, take info about one ban !baninfo, 
+or see logs of affected users !banlog
+
+Regular expression are supported for most common irc events
+
+The owner of the bot must add bot's hostmask as owner's hostmask : 
+in private query with your bot : !hostmask add botnickname!botident@bothost
+
+This plugin must be use with such setting :
+
+    supybot.databases.plugins.channelSpecific: True
+    
+in others case, you must !reload Channel each time you add or remove regexp.
+
+The bot works better with channel mode +z, and of course with a logChannel and opChannel.
+
+Each time you change conf settings related to Channel, globaly,
+you must reload Channel, if it's a channel specific config, 
+a !restorechan #channel is enough
+
+this version of supybot support all kind of list of a channel ( +e,+I,+q,+b ) of ircd-seven
+so you can use it as base to create your own plugin with some extras features:
+
+like irc.state.channels[channel].quiets, irc.state.channels[channel].exempts etc ..
+
+if you need help with this plugin or this version of supybot, 
+feel free to query me on freenode network, 
+my nick is 'niko'
+
+to have a fast and robust bot,
+i used these settings :
+
+supybot.networks.freenode.password: accountname:password
+supybot.networks.freenode.servers: barjavel.freenode.net:7000 ( you must target a specific server if you want to use ssl )
+supybot.networks.freenode.ssl: True
+supybot.reply.format.time: %Y-%m-%d %H:%M:%S
+supybot.reply.format.time.elapsed.short: True
+supybot.reply.whenNotCommand: False
+supybot.reply.error.detailed: False
+supybot.reply.error.inPrivate: True
+supybot.reply.error.withNotice: True
+supybot.reply.error.noCapability: True
+supybot.alwaysJoinOnInvite: False
+supybot.abuse.flood.ctcp.maximum: 1
+supybot.abuse.flood.ctcp.punishment: 3600
+supybot.drivers.poll: 1.0
+supybot.drivers.module: Twisted
+supybot.protocols.irc.banmask: exact
+supybot.protocols.irc.umodes: +QRi
+supybot.protocols.irc.throttleTime: 0.01
+supybot.protocols.irc.ping: True
+supybot.protocols.irc.ping.interval: 120
+supybot.protocols.irc.queuing.duplicates: True
+supybot.protocols.irc.queuing.rateLimit.join: 0.0
+supybot.capabilities: -list -admin -trusted -register -help -config misc.ping -alias.remove -owner -alias.add
+supybot.databases.plugins.channelSpecific: True
+
+some examples with regexp:
+
+!regadd #channel /hello/ @ channel private $channel $nick: Hello o/
+!onjoin #channel // @ channel private $channel hello $nick !
+
+if you want to use more complicated regexp, keep in mind to quote your 
+regexp to avoid the bot to understand that as pipe syntaxe or nested command :
+
+!onnick "/(away$|brb$|afk$)/" @ channel fpart $channel $nick Read topic, and use /away & /back
+
+!warn "/fuck/" @ 1 channel private $channel $nick: language.
+!warn "/fuck/" @ 2 channel kick $channel $nick: last warning.
+!warn "/fuck/" @ 3 channel kban $channel $nick 1h you have been warned
+
+for each kind of regexp, you can use $channel, $nick, $hostmask, $mask, $randomNick, $text
+ 

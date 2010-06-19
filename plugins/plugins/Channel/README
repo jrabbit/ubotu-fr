@@ -1,0 +1,18 @@
+This plugin will allow you to track bans, use regexps etc
+
+The owner of the bot must add bot's hostmask as owner's hostmask : 
+in private query with your bot : !hostmask add botnickname!botident@bothost
+
+any time you modify config, like : 
+!config channel #mychannel supybot.plugins.Channel.floodCheck True
+you must do !restorechan #mychannel to apply change
+
+this version of supybot support all kind of list of a channel ( +e,+I,+q,+b ) of ircd-seven
+
+so you can use it as base to create your own plugin with some extras features:
+
+like irc.state.channels[channel].quiets, or irc.state.channels[channel].exempts etc ..
+
+if you need help with this plugin or this version of supybot, feel free to query me on freenode network, 
+my nick is 'niko'
+
