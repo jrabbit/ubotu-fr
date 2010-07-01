@@ -139,7 +139,11 @@ class Time(callbacks.Plugin):
                 format = self.registryValue('format', channel)
             else:
                 format = self.registryValue('format')
-        irc.reply(time.strftime(format, time.localtime(seconds)))
+        if format == "kiloseconds" or format == "ks":
+            tm = time.localtime()
+            irc.reply((tm.tm_hour*3600+tm.tm_min*60+tm.tm_sec)/1000.0, "kiloseconds")
+        else:
+            irc.reply(time.strftime(format, time.localtime(seconds)))
     time = wrap(time, [optional('channel'), optional('nonInt'),
                        additional('float', TIME.time)])
 
