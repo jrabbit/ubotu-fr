@@ -22,7 +22,8 @@ class Reddit(callbacks.Plugin):
         self.__parent.__init__(irc)
         #self.dict = urbandictionary.Dictionary()
     def karma(self, irc, msg, args, phrase):
-        irc.reply("%s has %s link karma and %s comment karma: http://www.reddit.com/user/%s" % Reddit2.karma(phrase))
+        r = Reddit2()
+        irc.reply("%s has %s link karma and %s comment karma: http://www.reddit.com/user/%s" % r.karma(phrase))
     karma = wrap(karma, ['text'])
 
 Class = Reddit
