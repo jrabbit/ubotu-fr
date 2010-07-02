@@ -11,8 +11,7 @@ import supybot.plugins as plugins
 import supybot.ircutils as ircutils
 import supybot.callbacks as callbacks
 
-import local.reddit as reddit
-
+from local.reddit import Reddit as Reddit2
 
 class Reddit(callbacks.Plugin):
     """Look up user karma from Reddit.com."""
@@ -23,7 +22,7 @@ class Reddit(callbacks.Plugin):
         self.__parent.__init__(irc)
         #self.dict = urbandictionary.Dictionary()
     def karma(self, irc, msg, args, index, phrase):
-        irc.reply("%s has %s link karma and %s comment karma: http://www.reddit.com/user/%s" % reddit.karma(phrase))
+        irc.reply("%s has %s link karma and %s comment karma: http://www.reddit.com/user/%s" % Reddit2.karma(phrase))
    
 
 Class = Reddit
