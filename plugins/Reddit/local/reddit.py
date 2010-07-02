@@ -5,7 +5,7 @@ class Reddit:
     def __init__(self):
         self.url = 'http://www.reddit.com/user/%s/about.json'
     def karma(self, phrase):
-        user = sys.argv[1]
+        user = phrase
         raw = urlopen(self.url % phrase).read()
         data = json.loads(raw)['data']
         karma = data['link_karma']
